@@ -1,5 +1,6 @@
+require('dotenv/config');
 const sql = require('mssql');
-const connStr = "Server=131.161.123.151,31433;Database=SANKHYA_TESTE;User Id=Sankhya;Password=*hv2018&;";
+const connStr = process.env.STRING_CONEXAO;
 
 module.exports = sql.connect(connStr)
 .then(conn => global.conn = conn)

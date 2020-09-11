@@ -84,8 +84,10 @@ router.post('/forgot_password', async (req, res) => {
     try{
         const user = new User(req);
         let result = await user.findOne('email', user.email);
+
         if(result.length === 0)
             return res.status(400).send({error: 'User not found'});
+
         const token = crypto.randomBytes(20).toString('hex');
         const now = new Date();
         now.setHours(now.getHours() + 1);
@@ -93,7 +95,7 @@ router.post('/forgot_password', async (req, res) => {
         user.token = token;
         user.dhExpires = now;
 
-        user.forgotPassword();
+        await user.forgotPassword();
 
         sgMail.send({
             to: user.email,
@@ -117,6 +119,7 @@ router.post('/reset_password', async (req, res) =>{
     try{
         const user = new User(req);
         let result = await user.findOne('email', user.email);
+        
         if(result.length === 0)
             return res.status(400).send({error: 'User not found'});
 
@@ -127,6 +130,7 @@ router.post('/reset_password', async (req, res) =>{
             return res.status(400).send({error: 'Token invalid'});
 
         const now = new Date();
+
         if(now.toLocaleString() > result[0].DHEXPIRES)
             return res.status(400).send({error: 'Token expired, generate a new one'});
 

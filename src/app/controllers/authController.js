@@ -97,7 +97,7 @@ router.post('/forgot_password', async (req, res) => {
 
         await user.forgotPassword();
 
-        await sgMail.send({
+        sgMail.send({
             to: user.email,
             from: "noreply@royalcity.com.br",
             subject: "Recuperação de Senha - Royal City",
@@ -111,7 +111,7 @@ router.post('/forgot_password', async (req, res) => {
         });
 
     }catch(err){
-        res.status(400).send(err);
+        res.status(401).send(err);
         //res.status(400).send({error: 'Error on forgot password, try again'});
     }
 });

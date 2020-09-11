@@ -102,7 +102,7 @@ router.post('/forgot_password', async (req, res) => {
             from: "noreply@royalcity.com.br",
             subject: "Recuperação de Senha - Royal City",
             text: "Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha.",
-            html: `<strong><p>Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha. Token:  ${user.token}</p></strong>`,
+            html: `<strong><p>Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha.</p><p> Token:  ${user.token}</p></strong>`,
         }, (err) => {
             if(err)
                 return res.status(400).send(err);
@@ -129,9 +129,9 @@ router.post('/reset_password', async (req, res) =>{
             return res.status(400).send({error: 'Token invalid'});
 
         const now = new Date();
-
-        //if(now.toLocaleString() > result[0].DHEXPIRES)
-          //  return res.status(400).send({error: 'Token expired, generate a new one'});
+       
+        if(now.toLocaleString() > result[0].DHEXPIRES)
+            return res.status(400).send({error: 'Token expired, generate a new one'});
 
         user.id = result[0].ID;
         await user.updatePassword();

@@ -47,13 +47,13 @@ module.exports = class User {
     }
 
     async forgotPassword(){
-        return await execSQLQuery(`UPDATE USUARIO SET TOKEN = '${this.token}' WHERE ID = ${this.id}`);
+        return await execSQLQuery(`UPDATE USUARIO SET TOKEN = '${this.token}', DHEXPIRES = DATEADD(HOUR, 1, GETDATE()) WHERE ID = ${this.id}`);
     }
 
     async updatePassword(){
         const now = new Date();
         const hash = await this.encrypt(this.senha);
-        return await execSQLQuery(`UPDATE USUARIO SET SENHA = '${hash}'  WHERE ID = ${this.id}`);
+        return await execSQLQuery(`UPDATE USUARIO SET SENHA = '${hash}', DHEXPIRES = GETDATE()  WHERE ID = ${this.id}`);
     }
 }
 

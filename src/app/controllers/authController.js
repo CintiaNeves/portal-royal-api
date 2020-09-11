@@ -83,11 +83,9 @@ router.post('/authenticate', async (req, res) =>{
 router.post('/forgot_password', async (req, res) => {
     try{
         const user = new User(req);
-        let result = await user.findOne('email', user.email);;
-
+        let result = await user.findOne('email', user.email);
         if(result.length === 0)
             return res.status(400).send({error: 'User not found'});
-
         const token = crypto.randomBytes(20).toString('hex');
         const now = new Date();
         now.setHours(now.getHours() + 1);
@@ -96,21 +94,22 @@ router.post('/forgot_password', async (req, res) => {
         user.dhExpires = now;
 
         user.forgotPassword();
+
         sgMail.send({
             to: user.email,
             from: "noreply@royalcity.com.br",
             subject: "Recuperação de Senha - Royal City",
             text: "Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha.",
-            html: `<strong><p>Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha.</p><p>Token:  ${user.token}</p></strong>`,
+            html: `<strong><p>Você está recebendo este e-mail pois solicitou a troca da sua senha no Portal de comissões Royal. Use este token para alterar sua senha. Token:  ${user.token}</p></strong>`,
         }, (err) => {
             if(err)
-                return res.status(400).send({error: err})
+                return res.status(400).send({error: 'Cannot send on forgot password'})
             res.send();
         });
 
     }catch(err){
         
-        res.status(400).send({error: err});
+        res.status(400).send({error: 'Error on forgot password, try again'});
     }
 });
 
@@ -118,7 +117,6 @@ router.post('/reset_password', async (req, res) =>{
     try{
         const user = new User(req);
         let result = await user.findOne('email', user.email);
-        
         if(result.length === 0)
             return res.status(400).send({error: 'User not found'});
 

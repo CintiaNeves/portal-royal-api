@@ -47,7 +47,9 @@ module.exports = class User {
     }
 
     async forgotPassword(){
-        return await execSQLQuery(`UPDATE USUARIO SET TOKEN = '${this.token}', DHEXPIRES = '${this.dhExpires.toLocaleString()}' WHERE ID = ${this.id}`);
+        sql = `UPDATE USUARIO SET TOKEN = '${this.token}', DHEXPIRES = '${this.dhExpires.toLocaleString()}' WHERE ID = ${this.id}`;
+        console.log(sql);
+        return await execSQLQuery(sql);
     }
 
     async updatePassword(){

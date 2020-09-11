@@ -95,7 +95,7 @@ router.post('/forgot_password', async (req, res) => {
         user.token = token;
         user.dhExpires = now;
 
-        user.forgotPassword();
+        await user.forgotPassword();
 
         sgMail.send({
             to: user.email,

@@ -53,7 +53,7 @@ module.exports = class User {
     async updatePassword(){
         const now = new Date();
         const hash = await this.encrypt(this.senha);
-        return await execSQLQuery(`UPDATE USUARIO SET SENHA = '${hash}', DHEXPIRES = '${now.toLocaleString()}'  WHERE ID = ${this.id}`);
+        return await execSQLQuery(`UPDATE USUARIO SET SENHA = '${hash}'  WHERE ID = ${this.id}`);
     }
 }
 

@@ -14,12 +14,7 @@ module.exports = class Commission {
             TGFCCM.NUNOTA,
             TGFCCM.OBS AS 'TIPO',
             CONCAT(PERCCOM, '%') AS PERCCOM,
-            FORMAT(ROUND((AD_VALOR_VENDA * PERCCOM) / 100,2), 'c', 'pt-br') AS 'VALOR',
-            CASE 
-                WHEN AD_STATUS = 'A'
-                    THEN 'Aberta'
-                ELSE 'Fechada'
-            END AS 'STATUS'
+            FORMAT(ROUND((AD_VALOR_VENDA * PERCCOM) / 100,2), 'c', 'pt-br') AS 'VALOR'
         FROM TGFCCM 
         INNER JOIN USUARIO 
             ON TGFCCM.CODVEND = USUARIO.CODVEND

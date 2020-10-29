@@ -157,6 +157,18 @@ router.get('/comissao', async (req, res) =>{
     }
 });
 
+router.get('/totais', async (req, res) =>{
+    try{
+        const user = new User(req);
+        const mes = 9;
+        user.id = 1;
+        const commission = new Commission(user);
+        return res.send(await commission.find(mes));
+    }catch(err){
+        return res.status(400).send({error: err});
+    }
+});
+
 module.exports = app => app.use('/auth', router);
 
 

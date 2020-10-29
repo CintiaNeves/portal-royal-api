@@ -21,6 +21,7 @@ module.exports = class Commission {
         INNER JOIN TGFCAB 
             ON TGFCCM.NUNOTA = TGFCAB.NUNOTA
         WHERE  
-            USUARIO.ID = ${this.user.id}`);
+            TGFCAB.DTNEG >= CONVERT(date, getdate())
+            AND USUARIO.ID = ${this.user.id}`);
     }
 }

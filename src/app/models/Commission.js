@@ -31,7 +31,8 @@ module.exports = class Commission {
         return await execSQLQuery(`
         SELECT 
             COUNT(TGFCCM.NUNOTA) AS 'VENDAS',
-            (SELECT FORMAT(SUM(ROUND((AD_VALOR_VENDA * PERCCOM) / 100,2)), 'c', 'pt-br')) AS 'VALOR'
+            (SELECT FORMAT(SUM(ROUND((AD_VALOR_VENDA * PERCCOM) / 100,2)), 'c', 'pt-br')) AS 'VALOR',
+            FORMAT(GETDATE(),'dd/MM/yyyy') AS 'DT_CONSULTA'
         FROM TGFCCM 
         INNER JOIN USUARIO 
             ON TGFCCM.CODVEND = USUARIO.CODVEND
